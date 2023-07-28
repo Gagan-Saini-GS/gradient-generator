@@ -25,6 +25,39 @@ genrateGradient();
 $("#genrate-btn").on("click", genrateGradient);
 $("#flip-btn").on("click", flipGradient);
 
+$(".color-1").on("click", copyText);
+$(".color-2").on("click", copyText);
+
+function copyText(e) {
+  const colorCode = e.target.innerHTML;
+  const copiedMessage = $(".copied-span")[0];
+
+  // Create a temporary input element to hold the text
+  const tempInput = document.createElement("input");
+  tempInput.setAttribute("value", colorCode);
+  document.body.appendChild(tempInput);
+
+  // Select the text inside the input element
+  tempInput.select();
+  tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the selected text to the clipboard using the Clipboard API
+  navigator.clipboard
+    .writeText(tempInput.value)
+    .then(() => {
+      document.body.removeChild(tempInput);
+
+      // Show the "Copied!" message for a 1.5 second
+      copiedMessage.style.display = "inline";
+      setTimeout(() => {
+        copiedMessage.style.display = "none";
+      }, 1500);
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
+    });
+}
+
 function flipGradient() {
   var temp = color1;
   color1 = color2;
